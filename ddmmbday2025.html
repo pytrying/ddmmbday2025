@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+      background-color: #fff0f6;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    #revealButton {
+      padding: 20px 40px;
+      font-size: 2rem;
+      background-color: pink;
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      animation: pulse 1s infinite;
+    }
+
+    #birthdayMessage {
+      margin-top: 40px;
+      font-size: 3rem;
+      color: #ff3366;
+      display: none;
+    }
+
+    #buttons {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .personButton {
+      margin: 20px;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background-color: #ffe066;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .photo {
+      margin-top: 30px;
+      display: none;
+      max-width: 80%;
+      height: auto;
+      border: 5px solid #ffcccb;
+      border-radius: 20px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    .slide-down {
+      animation: slideDown 0.5s ease-out forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 6s infinite ease-in-out;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      50% { transform: translateY(-30px) rotate(10deg); opacity: 1; }
+      100% { transform: translateY(0) rotate(-10deg); opacity: 0.6; }
+    }
+
+    /* Falling hearts */
+    .falling-heart {
+      position: fixed;
+      top: -50px;
+      font-size: 2rem;
+      animation: fall 7s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating and falling hearts container -->
+  <div id="hearts"></div>
+
+  <!-- Reveal button -->
+  <button id="revealButton" onclick="revealBirthday()">Click here!</button>
+
+  <!-- Birthday message -->
+  <div id="birthdayMessage">HAPPY BIRTHDAY DADDY AND MUMMY!</div>
+
+  <!-- Parent buttons -->
+  <div id="buttons">
+    <button class="personButton" onclick="showImage('daddy')">Daddy</button>
+    <button class="personButton" onclick="showImage('mummy')">Mummy</button>
+  </div>
+
+  <!-- Images -->
+  <img id="daddy" class="photo" src="daddy.jpg" alt="Daddy" />
+  <img id="mummy" class="photo" src="mummy.jpg" alt="Mummy" />
+
+  <!-- Optional Background Music -->
+  <audio autoplay loop hidden>
+    <source src="birthday.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Slide down reveal
+    function revealBirthday() {
+      document.getElementById("revealButton").style.display = "none";
+      const msg = document.getElementById("birthdayMessage");
+      msg.style.display = "block";
+      msg.classList.add("slide-down");
+
+      const btns = document.getElementById("buttons");
+      setTimeout(() => {
+        btns.style.display = "block";
+        btns.classList.add("slide-down");
+      }, 500);
+    }
+
+    // Show parent photo
+    function showImage(id) {
+      const img = document.getElementById(id);
+      img.style.display = "block";
+      img.classList.add("slide-down");
+    }
+
+    // Floating hearts
+    const heartsContainer = document.getElementById("hearts");
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💖";
+      heart.style.top = Math.random() * 100 + "vh";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (1 + Math.random() * 2) + "rem";
+      heart.style.animationDelay = (Math.random() * 5) + "s";
+      heartsContainer.appendChild(heart);
+    }
+
+    // Falling hearts
+    setInterval(() => {
+      const fallHeart = document.createElement("div");
+      fallHeart.classList.add("falling-heart");
+      fallHeart.textContent = "💖";
+      fallHeart.style.left = Math.random() * 100 + "vw";
+      fallHeart.style.fontSize = (1 + Math.random() * 2) + "rem";
+      document.body.appendChild(fallHeart);
+      setTimeout(() => fallHeart.remove(), 8000);
+    }, 400);
+
+    // Mouse heart trail
+    document.addEventListener("mousemove", (e) => {
+      const trail = document.createElement("div");
+      trail.classList.add("heart");
+      trail.textContent = "💖";
+      trail.style.left = e.pageX + "px";
+      trail.style.top = e.pageY + "px";
+      trail.style.fontSize = "1.5rem";
+      trail.style.opacity = 1;
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 1000);
+    });
+  </script>
+</body>
+</html>
